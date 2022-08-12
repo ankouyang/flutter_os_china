@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_os_china/pages/home_page.dart';
+import 'package:flutter_os_china/pages/index/home_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_os_china/main.dart';

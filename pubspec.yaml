@@ -59,6 +59,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+  # 导航栏图标
   - assets/images/ic_nav_news_actived.png
   - assets/images/ic_nav_tweet_actived.png
   - assets/images/ic_nav_discover_actived.png
@@ -67,7 +68,10 @@ flutter:
   - assets/images/ic_nav_tweet_normal.png
   - assets/images/ic_nav_discover_normal.png
   - assets/images/ic_nav_my_pressed.png
-
+  # 抽屉背景
+  - assets/images/cover_img.jpg
+  - # 默认头像
+  - assets/images/ic_avatar_default.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,5 +1,9 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_os_china/pages/index/discover_page.dart';
+import 'package:flutter_os_china/pages/index/my_page.dart';
+import 'package:flutter_os_china/pages/index/news_page.dart';
+import 'package:flutter_os_china/pages/index/tweet_page.dart';
+import 'package:flutter_os_china/widgets/my_drawer.dart';
 import 'package:flutter_os_china/widgets/navigation_icon_view.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,10 +40,10 @@ class _HomePageState extends State<HomePage> {
     ];
    //初始化首页 Widget
    _homeWidget =[
-      Container(color: Colors.red),
-      Container(color: Colors.yellow),
-      Container(color: Colors.blue),
-      Container(color: Colors.green),
+      NewsPage(),
+      TweetPage(),
+      DiscoverPage(),
+      MyPage(),
    ];
 
     //创建PageContoller控制器的实例,用来监听控制 pageView
@@ -77,11 +81,14 @@ class _HomePageState extends State<HomePage> {
           type:BottomNavigationBarType.fixed ,//让label文字显示出来
           onTap: (index){
             //点击时候也让其滑动到指定的页面
-            _pageController.animateToPage(index, duration: Duration(milliseconds: 1), curve:Curves.ease );
+            _pageController.animateToPage(index, duration: const Duration(milliseconds: 1), curve:Curves.ease );
           },
           currentIndex: _currentIndex,
       ),
-      drawer:Drawer(),
+      drawer: MyDrawer(
+        headImgPath: 'assets/images/cover_img.jpg',
+        menuIcons: const [Icons.send,Icons.home,Icons.error,Icons.settings],
+        menuTitles: const ['发布动弹','动弹小黑屋','关于','设置']),
     );
   }
 }

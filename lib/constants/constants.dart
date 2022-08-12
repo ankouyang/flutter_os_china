@@ -1,6 +1,7 @@
 // 定义一系列常量抽象类
 import 'package:flutter/material.dart';
 
+//主题颜色
 abstract class AppColor{
   //应用主题色
   static const int _primaryColorValue  = 0xff63ca6c;
@@ -21,5 +22,17 @@ abstract class AppColor{
     },
   );
 
-  //
+}
+//应用信息
+abstract class AppInfos{
+  static const String clientID = '6RDDKdVEZU2TyaPSw1Ky';
+  static const String clientSecret = 'QubVwezEgk1RnyzFyVLw9YPTzFHPgRcp';
+  static const String redirectUrl = 'https://ankouyang.club/';
+}
+
+//接口API
+abstract class AppUrls{
+  static const String host = 'https://www.oschina.net';
+  static const String oauth2Authorize = '$host/action/oauth2/authorize';
+  static const String oauth2Token = '$host/action/openapi/token';
 }
