@@ -25,14 +25,20 @@ abstract class AppColor{
 }
 //应用信息
 abstract class AppInfos{
+  //客户ID
   static const String clientID = '6RDDKdVEZU2TyaPSw1Ky';
+  //应用私钥
   static const String clientSecret = 'QubVwezEgk1RnyzFyVLw9YPTzFHPgRcp';
+  // 应用回调地址
   static const String redirectUrl = 'https://ankouyang.club/';
 }
 
 //接口API
 abstract class AppUrls{
+  // host地址
   static const String host = 'https://www.oschina.net';
+  // OpenAPI 授权登录
   static const String oauth2Authorize = '$host/action/oauth2/authorize';
+  // authorization_code 方式获取 AccessToken
   static const String oauth2Token = '$host/action/openapi/token';
 }

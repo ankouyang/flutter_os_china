@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_os_china/constants/constants.dart' show AppColor;
+import 'package:flutter_os_china/constants/constants.dart';
+import 'package:flutter_os_china/pages/login/index.dart';
+
 
 class MyPage extends StatefulWidget {
    const MyPage({Key? key}) : super(key: key);
@@ -26,6 +28,28 @@ class _MyPageState extends State<MyPage> {
     '我的团队',
     '邀请好友'
   ];
+
+  String ?userAvatar;
+  String ?userName;
+
+  Widget  loginWidget =  LoginPage();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //请求接口，是否登陆，如果登陆,则显示用户的头像昵称。如果没有登陆, 则显示点击头像登陆
+    _showUserInfo();
+  }
+
+  _showUserInfo(){
+
+  }
+
+  _login(){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>loginWidget));
+  }
+
   @override
   Widget build(BuildContext context) {
     //这里使用带有分割线的ListView
@@ -52,7 +76,6 @@ class _MyPageState extends State<MyPage> {
         itemCount: menuTitles.length+1
     );
   }
-
   Container _buildHeader(){
     return Container (
       height: 150.0,
@@ -80,6 +103,7 @@ class _MyPageState extends State<MyPage> {
               ),
               onTap: (){
                 print('点击头像触发事件');
+                _login();
               },
             ),
             const SizedBox(height: 10.0),

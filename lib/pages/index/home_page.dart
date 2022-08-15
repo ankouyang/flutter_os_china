@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
             _currentIndex =index;
           });
         }
-      ),
+        ),
       //底部Button
       bottomNavigationBar: BottomNavigationBar(
           items:_navigationIconViews.map((view) =>view.item).toList() ,//最终需要使用toList方法转化成List

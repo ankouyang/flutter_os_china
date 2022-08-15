@@ -45,7 +45,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-
+  http: ^0.13.5
+  flutter_webview_plugin:
+    git: https://github.com/nuc134r/flutter_webview_plugin.git
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
