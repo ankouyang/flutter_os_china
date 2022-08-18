@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         title:  Text(_appBottomBarTitle[_currentIndex],style: const TextStyle(fontSize: 18.0)),
       ),
       body: PageView.builder(
-        // physics: NeverScrollableScrollPhysics(),//禁止滑动
+        // physics: NeverScrollableScrollPhy sics(),//禁止滑动
         itemBuilder:(BuildContext context, int index) { //使用pageView组件 需要使用 PageView.builder  并返回当前的组件
           return    _homeWidget.elementAt(index);
         },

@@ -41,4 +41,6 @@ abstract class AppUrls{
   static const String oauth2Authorize = '$host/action/oauth2/authorize';
   // authorization_code 方式获取 AccessToken
   static const String oauth2Token = '$host/action/openapi/token';
+  // 获取当前登录用户的账户信息
+  static const String userInfo = '$host/action/openapi/user';
 }

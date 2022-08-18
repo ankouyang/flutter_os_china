@@ -45,9 +45,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  # http请求包
   http: ^0.13.5
+  # 数据共享插件
+  shared_preferences: ^2.0.15
+  #  eventBus: 发布订阅
+  event_bus: ^2.0.0
+  # webview_flutter插件
   flutter_webview_plugin:
-    git: https://github.com/nuc134r/flutter_webview_plugin.git
+    git: https://github.com/snoopdoggy322/flutter_webview_plugin
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

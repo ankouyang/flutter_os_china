@@ -1,6 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_os_china/constants/constants.dart';
 import 'package:flutter_os_china/pages/login/index.dart';
+import 'package:flutter_os_china/common/event_bus.dart';
+import 'package:flutter_os_china/utils/network_request.dart';
+import '../../utils/data_until.dart';
 
 
 class MyPage extends StatefulWidget {
@@ -38,16 +42,67 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //请求接口，是否登陆，如果登陆,则显示用户的头像昵称。如果没有登陆, 则显示点击头像登陆
+    // eventBus LoginEvent监听
+    eventBus.on<LoginEvent>().listen((event) {
+     // 登陆后获取用户信息
+      print('dsadas');
+      _getUserInfo();
+    });
+    // eventBus做LogOutEvent监听
+    eventBus.on<LogOutEvent>().listen((event) {
+      _showUserInfo();
+    });
+    //已经登录的时候,直接显示
     _showUserInfo();
-  }
-
-  _showUserInfo(){
 
   }
 
-  _login(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>loginWidget));
+  _getUserInfo() async {
+    String  accessToken =  await DataUntils.getAccessToken();
+    if(accessToken == null ||accessToken.length ==0) return ;
+        Map<String,dynamic> params = {
+          'access_token': accessToken,
+          'dataType':'json'
+        };
+        print(params);
+       print(AppUrls.userInfo);
+        NetUtils.get(AppUrls.userInfo, params).then((data){
+          Map<String,dynamic> mapData  = json.decode(data);
+          print(mapData);
+          if(mounted){
+            setState(() {
+              userAvatar =  mapData['avatar'];
+              userName =  mapData['name'];
+            });
+          }
+         //同时存储用户信息
+         DataUntils.saveUserInfo(mapData);
+        });
+  }
+  _showUserInfo() async {
+     var user =  await DataUntils.getUserInfo();
+     if(mounted){
+       setState(() {
+          if(user!= null){
+            userAvatar = user.avatar;
+            userName = user.name;
+          }else{
+            userAvatar = null;
+            userName = null;
+          }
+       });
+     }
+
+  }
+
+  _login() async {
+    //跳转到登陆页面
+   final  result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>loginWidget));
+   if(result!=null&&result =='refresh'){
+     //登陆成功后,进行订阅 LoginEvent事件 这定义的是一个类
+     eventBus.fire(LoginEvent());
+    }
+
   }
 
   @override
@@ -85,7 +140,7 @@ class _MyPageState extends State<MyPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              child:Container(
+              child:userAvatar!=null?Container(
                 width: 60.0,
                 height: 60.0,
                 decoration:  BoxDecoration(
@@ -95,19 +150,24 @@ class _MyPageState extends State<MyPage> {
                         width: 2.0,
                         color: const Color(0xffffffff)
                     ),
-                    image:const DecorationImage(
-                        image: AssetImage('assets/images/ic_avatar_default.png'),
+                    image: DecorationImage(
+                        image: NetworkImage(userAvatar!),
                         fit: BoxFit.cover
                     )
                 ),
-              ),
-              onTap: (){
-                print('点击头像触发事件');
-                _login();
+              ):Image.asset('assets/images/ic_avatar_default.png',width: 60.0,height: 60.0),
+              onTap: () async{
+               bool? isLogin = await DataUntils.isLogin();
+                 if(isLogin){
+                   // 跳转到用户详情
+                   print('ssd');
+                 }else{
+                   _login();
+                 }
               },
             ),
             const SizedBox(height: 10.0),
-            const Text('点击头像登陆',style: TextStyle(color: Colors.white)),
+            userName==null?const Text('点击头像登陆',style: TextStyle(color: Colors.white)):Text(userName!,style: const TextStyle(color: Colors.white)),
           ],
         ),
       ),
