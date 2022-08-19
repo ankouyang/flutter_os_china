@@ -1,5 +1,8 @@
 // 定义一系列常量抽象类
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
 
 //主题颜色
 abstract class AppColor{
@@ -32,6 +35,17 @@ abstract class AppInfos{
   // 应用回调地址
   static const String redirectUrl = 'https://ankouyang.club/';
 }
+
+//屏幕宽高
+ class  AppPhysicalSize{
+  double hcScreenWidth() {
+    return window.physicalSize.width;
+  }
+  double hcScreenHeight(){
+    return window.physicalSize.height;
+  }
+}
+
 
 //接口API
 abstract class AppUrls{

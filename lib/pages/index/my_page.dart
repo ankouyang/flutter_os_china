@@ -4,7 +4,8 @@ import 'package:flutter_os_china/constants/constants.dart';
 import 'package:flutter_os_china/pages/login/index.dart';
 import 'package:flutter_os_china/common/event_bus.dart';
 import 'package:flutter_os_china/utils/network_request.dart';
-import '../../utils/data_until.dart';
+import 'package:flutter_os_china/utils/data_until.dart';
+import 'package:flutter_os_china/pages/profile/detail.dart';
 
 
 class MyPage extends StatefulWidget {
@@ -42,18 +43,20 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    // 尝试获取用户信息
+    _showUserInfo();
     // eventBus LoginEvent监听
     eventBus.on<LoginEvent>().listen((event) {
      // 登陆后获取用户信息
-      print('dsadas');
       _getUserInfo();
     });
     // eventBus做LogOutEvent监听
     eventBus.on<LogOutEvent>().listen((event) {
+      //退出的登录的时候,也要重新调用_showUserInfo，我们在设置里面进行退出。
       _showUserInfo();
     });
-    //已经登录的时候,直接显示
-    _showUserInfo();
+
 
   }
 
@@ -102,7 +105,6 @@ class _MyPageState extends State<MyPage> {
      //登陆成功后,进行订阅 LoginEvent事件 这定义的是一个类
      eventBus.fire(LoginEvent());
     }
-
   }
 
   @override
@@ -119,9 +121,14 @@ class _MyPageState extends State<MyPage> {
                leading: Icon(menuIcons[index]),
                title: Text(menuTitles[index]),
                trailing: Icon(Icons.arrow_forward_ios,size: 15.0),
-               onTap:(){
+               onTap:()async{
                  //TODO
-                 print('跳转');
+                 bool? isLogin = await DataUntils.isLogin();
+                 if(isLogin){
+                   print('跳转到对应的详情界面');
+                 }else{
+                   _login();//否则重新登录
+                 }
                } ,
            );
         },
@@ -159,15 +166,16 @@ class _MyPageState extends State<MyPage> {
               onTap: () async{
                bool? isLogin = await DataUntils.isLogin();
                  if(isLogin){
-                   // 跳转到用户详情
-                   print('ssd');
+                   if(mounted){
+                     Navigator.push(context,MaterialPageRoute(builder: (context)=> ProfileDetail()));
+                   }
                  }else{
                    _login();
                  }
               },
             ),
             const SizedBox(height: 10.0),
-            userName==null?const Text('点击头像登陆',style: TextStyle(color: Colors.white)):Text(userName!,style: const TextStyle(color: Colors.white)),
+              Text(userName??='点击头像登陆',style: const TextStyle(color: Colors.white))
           ],
         ),
       ),

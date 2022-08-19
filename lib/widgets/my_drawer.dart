@@ -49,6 +49,7 @@ class MyDrawer extends StatelessWidget {
     ); //image占了一个位置，所以这里需要+1
   }
  _pushRoute(BuildContext context,int index){
+    Navigator.pop(context);//关闭Drawer抽屉
     Widget currentWidget = _navigationMap[index]!;
     Navigator.push(context, MaterialPageRoute(builder: (context)=>currentWidget));
  }
