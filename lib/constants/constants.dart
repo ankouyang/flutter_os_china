@@ -57,4 +57,6 @@ abstract class AppUrls{
   static const String oauth2Token = '$host/action/openapi/token';
   // 获取当前登录用户的账户信息
   static const String userInfo = '$host/action/openapi/user';
+  // 获取用户详情接口
+  static const String myInformation = '$host/action/openapi/my_information';
 }

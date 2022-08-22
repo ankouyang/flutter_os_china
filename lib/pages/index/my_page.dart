@@ -37,7 +37,7 @@ class _MyPageState extends State<MyPage> {
   String ?userAvatar;
   String ?userName;
 
-  Widget  loginWidget =  LoginPage();
+  Widget  loginWidget =  const LoginPage();
 
   @override
   void initState() {
@@ -167,7 +167,7 @@ class _MyPageState extends State<MyPage> {
                bool? isLogin = await DataUntils.isLogin();
                  if(isLogin){
                    if(mounted){
-                     Navigator.push(context,MaterialPageRoute(builder: (context)=> ProfileDetail()));
+                     Navigator.push(context,MaterialPageRoute(builder: (context)=> const ProfileDetail()));
                    }
                  }else{
                    _login();
