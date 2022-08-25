@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_os_china/utils/data_until.dart';
 import 'package:flutter_os_china/constants/constants.dart' show AppUrls;
 import 'package:flutter_os_china/utils/network_request.dart';
+import 'package:flutter_os_china/utils/image_picker.dart';
 import 'package:flutter_os_china/models/user_info.dart';
 class ProfileDetail extends StatefulWidget {
   const ProfileDetail({Key? key}) : super(key: key);
@@ -80,6 +81,7 @@ class _ProfileDetailState extends State<ProfileDetail> {
           InkWell(
             onTap: () {
               //TODO
+              ImagePickerUntil.chooseImage();
             },
             child: Container(
               margin: const EdgeInsets.only(left: 20.0),
