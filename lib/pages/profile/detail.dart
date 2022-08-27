@@ -6,6 +6,7 @@ import 'package:flutter_os_china/constants/constants.dart' show AppUrls;
 import 'package:flutter_os_china/utils/network_request.dart';
 import 'package:flutter_os_china/utils/image_picker.dart';
 import 'package:flutter_os_china/models/user_info.dart';
+import 'package:image_picker/image_picker.dart';
 class ProfileDetail extends StatefulWidget {
   const ProfileDetail({Key? key}) : super(key: key);
 
@@ -15,13 +16,25 @@ class ProfileDetail extends StatefulWidget {
 
 class _ProfileDetailState extends State<ProfileDetail> {
   dynamic  _userInfo;
+  String ? base64Image;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserInfoDetail();
   }
+  chooseImage() async {
+    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (file == null) return;
+    List<int> imageBytes = await file.readAsBytes();
 
+    String base64 = base64Encode(imageBytes);
+    String base64Image1 = "data:image/png;base64,$base64";
+    setState(() {
+      //添加data:image/png;base64,是为了传给后台后台识别并存储
+      base64Image =base64Image1;
+    });
+  }
   //获取详情接口
   void getUserInfoDetail()  {
     DataUntils.getAccessToken().then((accessToken){
@@ -81,7 +94,11 @@ class _ProfileDetailState extends State<ProfileDetail> {
           InkWell(
             onTap: () {
               //TODO
-              ImagePickerUntil.chooseImage();
+              chooseImage();
+              // setState(() {
+              //   base64Image =  ImagePickerUntil.chooseImage();
+              // });
+
             },
             child: Container(
               margin: const EdgeInsets.only(left: 20.0),
@@ -96,19 +113,30 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     style: TextStyle(fontSize: 20.0),
                   ),
                   Container(
-                    width: 60.0,
-                    height: 60.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 2.0,
-                      ),
-                      image: DecorationImage(
-                        image: NetworkImage(_userInfo.portrait),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    child:base64Image!=null?
+                        Image.memory(
+                        base64.decode(
+                        //flutter中Image.memory不识别base64前面的，需要截取一下
+                        base64Image!.split(',')[1]),
+                        height:60,    //设置高度
+                        width:60,    //设置宽度
+                        fit: BoxFit.fill,    //填充
+                        gaplessPlayback:true, //防止重绘
+                        ):  Container(
+                              width: 60.0,
+                              height: 60.0,
+                              decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                              color: Colors.white,
+                              width: 2.0,
+                              ),
+                              image: DecorationImage(
+                              image: NetworkImage(_userInfo.portrait),
+                              fit: BoxFit.cover,
+                              ),
+                              ),
+                              )
                   )
                 ],
               ),
