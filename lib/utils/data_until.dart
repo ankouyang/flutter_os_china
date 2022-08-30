@@ -114,4 +114,18 @@ class DataUntils {
     print(user);
     return user;
   }
+  // 清除用户信息
+  static Future<void> clearUseInfo() async{
+    SharedPreferences  sp = await SharedPreferences.getInstance();//先定义一个SharedPreferences的实例。
+    //通过SharedPreferences的实例中的setString(key,value)去存相关数据
+    sp
+    ..setInt(spUserId, -1)
+    ..setString(spEmail,'')
+    ..setString(spName,'')
+    ..setString(spGender, '')
+    ..setString(spAvatar, '')
+    ..setString(spLocation,'')
+    ..setString(spUrl, '');
+
+  }
 }

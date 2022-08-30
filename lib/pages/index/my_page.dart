@@ -56,10 +56,8 @@ class _MyPageState extends State<MyPage> {
       //退出的登录的时候,也要重新调用_showUserInfo，我们在设置里面进行退出。
       _showUserInfo();
     });
-
-
   }
-
+  // 接口获取用户信息
   _getUserInfo() async {
     String  accessToken =  await DataUntils.getAccessToken();
     if(accessToken == null ||accessToken.length ==0) return ;
@@ -82,6 +80,7 @@ class _MyPageState extends State<MyPage> {
          DataUntils.saveUserInfo(mapData);
         });
   }
+  // 从缓存中取用户信息
   _showUserInfo() async {
      var user =  await DataUntils.getUserInfo();
      if(mounted){
@@ -97,13 +96,24 @@ class _MyPageState extends State<MyPage> {
      }
 
   }
-
+  // 登陆
   _login() async {
     //跳转到登陆页面
    final  result = await Navigator.push(context, MaterialPageRoute(builder: (context)=>loginWidget));
    if(result!=null&&result =='refresh'){
      //登陆成功后,进行订阅 LoginEvent事件 这定义的是一个类
      eventBus.fire(LoginEvent());
+    }
+  }
+  // 跳转到用户详情
+  _refreshImg() async {
+    if(mounted){
+      final result = await Navigator.push(context,MaterialPageRoute(builder: (context)=> const ProfileDetail()));
+      print(result);
+      if(result!=null&&result =='refresh'){
+        //在用户详情如果上传过新的图片 这里需要刷新获取最新的用户信息 进行订阅 LoginEvent事件 这定义的是一个类
+        eventBus.fire(LoginEvent());
+      }
     }
   }
 
@@ -166,9 +176,7 @@ class _MyPageState extends State<MyPage> {
               onTap: () async{
                bool? isLogin = await DataUntils.isLogin();
                  if(isLogin){
-                   if(mounted){
-                     Navigator.push(context,MaterialPageRoute(builder: (context)=> const ProfileDetail()));
-                   }
+                   _refreshImg();
                  }else{
                    _login();
                  }

@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_os_china/utils/data_until.dart';
-import 'package:flutter_os_china/constants/constants.dart' show AppUrls;
+import 'package:flutter_os_china/constants/constants.dart' show AppColor, AppUrls;
 import 'package:flutter_os_china/utils/network_request.dart';
-import 'package:flutter_os_china/utils/image_picker.dart';
 import 'package:flutter_os_china/models/user_info.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:dio/dio.dart';
 class ProfileDetail extends StatefulWidget {
   const ProfileDetail({Key? key}) : super(key: key);
 
@@ -16,23 +18,52 @@ class ProfileDetail extends StatefulWidget {
 
 class _ProfileDetailState extends State<ProfileDetail> {
   dynamic  _userInfo;
-  String ? base64Image;
+  late BuildContext pageConText;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getUserInfoDetail();
   }
+  //选择相册图片
   chooseImage() async {
+    ImagePicker imagePicker = ImagePicker();
     XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
     if (file == null) return;
+    /**
+     * 转base64
     List<int> imageBytes = await file.readAsBytes();
-
     String base64 = base64Encode(imageBytes);
-    String base64Image1 = "data:image/png;base64,$base64";
-    setState(() {
-      //添加data:image/png;base64,是为了传给后台后台识别并存储
-      base64Image =base64Image1;
+    String base64Image1 = "data:image/jpeg;base64,$base64";
+    updatePortrait(base64Image1);
+     */
+
+
+    String accessToken = await DataUntils.getAccessToken();
+    FormData formData  = FormData.fromMap(<String,dynamic>{
+      'access_token':accessToken,
+      'portrait':await MultipartFile.fromFile(file.path,filename:file.name)
+    });
+    //更新头像
+    Dio dio =  Dio();
+    dio.post(AppUrls.portraitUpdate, data:formData, options: Options(contentType: "multipart/form-data")).then((data){
+      Map<String, dynamic> map = json.decode(data.toString()) ;
+      print(map);
+      if(map['error'] =='200'){
+        //重新更新详情接口
+        getUserInfoDetail();
+      }else{
+        // 错误提示
+        Fluttertoast.showToast(
+            msg: map['error_description'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black45,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+
     });
   }
   //获取详情接口
@@ -75,11 +106,51 @@ class _ProfileDetailState extends State<ProfileDetail> {
   }
   @override
   Widget build(BuildContext context) {
+    // Scaffold(
+    //     backgroundColor: AppColor.primaryColor,
+    //     body: SafeArea(
+    //         child:Container(
+    //           color: Colors.white,
+    //           height:800.0,
+    //           child: Column(
+    //             children: [
+    //               Container(
+    //                 height:60.0,
+    //                 color: AppColor.primaryColor,
+    //                 child: GestureDetector(
+    //                     onTap: (){
+    //                       Navigator.pop(context, 'refresh');
+    //                     },
+    //                     child: Container(
+    //                       padding: const EdgeInsets.all(8.0),
+    //                       child:  Row(
+    //                           children: const [
+    //                             Icon(Icons.arrow_back,color: Colors.white),
+    //                             SizedBox(width: 20.0),
+    //                             Text('我的资料',style: TextStyle(color: Colors.white,fontSize: 18.0))
+    //                           ]),
+    //                     )
+    //
+    //                 ),
+    //               ),
+    //               Container(
+    //                 child: buildSingleChildScrollView(),
+    //               )
+    //             ],
+    //           ),
+    //         )
+    //     )
+    //
+    // )
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('我的资料'),
-        ),
-       body:buildSingleChildScrollView()
+       appBar: AppBar(
+         title: const Text('我的资料'),
+         leading: IconButton(icon: const Icon(Icons.arrow_back),onPressed:(){
+           Navigator.pop(context, 'refresh');
+         } ),
+       ),
+      body:buildSingleChildScrollView() ,
+
     );
   }
 
@@ -95,10 +166,6 @@ class _ProfileDetailState extends State<ProfileDetail> {
             onTap: () {
               //TODO
               chooseImage();
-              // setState(() {
-              //   base64Image =  ImagePickerUntil.chooseImage();
-              // });
-
             },
             child: Container(
               margin: const EdgeInsets.only(left: 20.0),
@@ -113,30 +180,19 @@ class _ProfileDetailState extends State<ProfileDetail> {
                     style: TextStyle(fontSize: 20.0),
                   ),
                   Container(
-                    child:base64Image!=null?
-                        Image.memory(
-                        base64.decode(
-                        //flutter中Image.memory不识别base64前面的，需要截取一下
-                        base64Image!.split(',')[1]),
-                        height:60,    //设置高度
-                        width:60,    //设置宽度
-                        fit: BoxFit.fill,    //填充
-                        gaplessPlayback:true, //防止重绘
-                        ):  Container(
-                              width: 60.0,
-                              height: 60.0,
-                              decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                              color: Colors.white,
-                              width: 2.0,
-                              ),
-                              image: DecorationImage(
-                              image: NetworkImage(_userInfo.portrait),
-                              fit: BoxFit.cover,
-                              ),
-                              ),
-                              )
+                    width: 60.0,
+                    height: 60.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2.0,
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage(_userInfo.portrait),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   )
                 ],
               ),
