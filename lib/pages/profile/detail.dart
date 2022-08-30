@@ -18,7 +18,7 @@ class ProfileDetail extends StatefulWidget {
 
 class _ProfileDetailState extends State<ProfileDetail> {
   dynamic  _userInfo;
-  late BuildContext pageConText;
+  bool?_hasUpload;
   @override
   void initState() {
     // TODO: implement initState
@@ -52,6 +52,9 @@ class _ProfileDetailState extends State<ProfileDetail> {
       if(map['error'] =='200'){
         //重新更新详情接口
         getUserInfoDetail();
+        setState(() {
+          _hasUpload = true;
+        });
       }else{
         // 错误提示
         Fluttertoast.showToast(
@@ -146,7 +149,12 @@ class _ProfileDetailState extends State<ProfileDetail> {
        appBar: AppBar(
          title: const Text('我的资料'),
          leading: IconButton(icon: const Icon(Icons.arrow_back),onPressed:(){
-           Navigator.pop(context, 'refresh');
+           if(_hasUpload==true){
+             Navigator.pop(context, 'refresh');
+           }else{
+             Navigator.pop(context);
+           }
+
          } ),
        ),
       body:buildSingleChildScrollView() ,
