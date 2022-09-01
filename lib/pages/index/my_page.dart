@@ -121,32 +121,43 @@ class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     //这里使用带有分割线的ListView
-    return ListView.separated(
+    return ListView.builder(
         padding: const EdgeInsets.all(0.0),
         itemBuilder: (BuildContext context,int index){
            if(index == 0){
              return _buildHeader();
            }
            index -=1;
-           return ListTile(
-               leading: Icon(menuIcons[index]),
-               title: Text(menuList[index]['name']),
-               trailing: const Icon(Icons.arrow_forward_ios,size: 15.0),
-               onTap:()async{
-                 //TODO
-                 bool? isLogin = await DataUntils.isLogin();
-                 if(isLogin){
-                   if(mounted){
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>menuList[index]['page']));
-                   }
-                 }else{
-                   _login();//否则重新登录
-                 }
-               } ,
-           );
-        },
-        separatorBuilder: (context,index){
-          return const Divider();
+           return Container(
+             margin: const EdgeInsets.symmetric(vertical: 5.0),
+             decoration:  BoxDecoration(
+                 color: Colors.white,
+                 boxShadow:[
+                   BoxShadow(
+                       color:const Color(0xffaaaaaa).withOpacity(0.2),
+                       offset: const Offset(0.0, 5.0), //阴影y轴偏移量
+                       blurRadius: 5.0, //阴影模糊程度
+                       spreadRadius: 0.0 //阴影扩散程度
+                   )
+                 ]
+             ),
+             child:  ListTile(
+                   leading: Icon(menuIcons[index]),
+                   title: Text(menuList[index]['name']),
+                   trailing: const Icon(Icons.arrow_forward_ios,size: 15.0),
+                   onTap:()async{
+                     //TODO
+                     bool? isLogin = await DataUntils.isLogin();
+                     if(isLogin){
+                       if(mounted){
+                         Navigator.push(context, MaterialPageRoute(builder: (context)=>menuList[index]['page']));
+                       }
+                     }else{
+                       _login();//否则重新登录
+                     }
+                   } ,
+                 ),
+            );
         },
         itemCount: menuList.length+1
     );

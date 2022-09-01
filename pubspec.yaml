@@ -56,6 +56,7 @@ dev_dependencies:
   # 选择相册
   image_picker: ^0.8.5+3
   # 提示
+  barcode_scan2: ^4.2.1
   fluttertoast: ^8.0.9
   # webview_flutter插件
   flutter_webview_plugin:
