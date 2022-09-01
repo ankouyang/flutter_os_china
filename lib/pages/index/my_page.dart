@@ -6,6 +6,7 @@ import 'package:flutter_os_china/common/event_bus.dart';
 import 'package:flutter_os_china/utils/network_request.dart';
 import 'package:flutter_os_china/utils/data_until.dart';
 import 'package:flutter_os_china/pages/profile/detail.dart';
+import 'package:flutter_os_china/pages/message/index.dart';
 
 
 class MyPage extends StatefulWidget {
@@ -24,14 +25,14 @@ class _MyPageState extends State<MyPage> {
     Icons.onetwothree_rounded,
     Icons.person
   ];
-  List menuTitles = [
-    '我的消息',
-    '阅读记录',
-    '我的博客',
-    '我的问答',
-    '我的活动',
-    '我的团队',
-    '邀请好友'
+  List menuList = [
+  {'name':'我的消息','page':const MyNews()},
+  {'name':'阅读记录','page':const MyNews()},
+  {'name':'我的博客','page':const MyNews()},
+  {'name':'我的问答','page':const MyNews()},
+  {'name':'我的活动','page':const MyNews()},
+  {'name':'我的团队','page':const MyNews()},
+  {'name':'邀请好友','page':const MyNews()},
   ];
 
   String ?userAvatar;
@@ -121,7 +122,7 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     //这里使用带有分割线的ListView
     return ListView.separated(
-        padding: EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(0.0),
         itemBuilder: (BuildContext context,int index){
            if(index == 0){
              return _buildHeader();
@@ -129,13 +130,15 @@ class _MyPageState extends State<MyPage> {
            index -=1;
            return ListTile(
                leading: Icon(menuIcons[index]),
-               title: Text(menuTitles[index]),
-               trailing: Icon(Icons.arrow_forward_ios,size: 15.0),
+               title: Text(menuList[index]['name']),
+               trailing: const Icon(Icons.arrow_forward_ios,size: 15.0),
                onTap:()async{
                  //TODO
                  bool? isLogin = await DataUntils.isLogin();
                  if(isLogin){
-                   print('跳转到对应的详情界面');
+                   if(mounted){
+                     Navigator.push(context, MaterialPageRoute(builder: (context)=>menuList[index]['page']));
+                   }
                  }else{
                    _login();//否则重新登录
                  }
@@ -145,7 +148,7 @@ class _MyPageState extends State<MyPage> {
         separatorBuilder: (context,index){
           return const Divider();
         },
-        itemCount: menuTitles.length+1
+        itemCount: menuList.length+1
     );
   }
   Container _buildHeader(){
