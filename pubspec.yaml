@@ -83,6 +83,7 @@ flutter:
   - assets/images/ic_nav_tweet_normal.png
   - assets/images/ic_nav_discover_normal.png
   - assets/images/ic_nav_my_pressed.png
+  - assets/images/shake.png
   # 抽屉背景
   - assets/images/cover_img.jpg
   - # 默认头像

@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
-// import 'package:barcode_scan/barcode_scan.dart';
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_os_china/pages/commonweb/index.dart';
+import 'package:flutter_os_china/pages/shake/index.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+class ArgumentsMap{
+  final String webUrl;
+  ArgumentsMap(this.webUrl);
+}
+
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -30,6 +38,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
     },
   ];
 
+  // 第三方插件 barcode_scan2的初始化options设置
   ScanResult? scanResult;
 
   final _flashOnController = TextEditingController(text: '开灯');
@@ -47,7 +56,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   List<BarcodeFormat> selectedFormats = [..._possibleFormats];
 
   // 调用原生的扫一扫
-  Future<void> _scan() async {
+  Future<void> _scan(title) async {
     try {
       final result = await BarcodeScanner.scan(
         options: ScanOptions(
@@ -65,9 +74,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
         ),
       );
-      print('二维码结果');
-      print(result.rawContent);
       setState(() => scanResult = result);
+      // 同时进行webView的跳转
+      // print(result.rawContent);
+      if(result.rawContent!=''){
+        _navToWebPage(title, result.rawContent);
+      }
+
+
+
     } on PlatformException catch (e) {
       setState(() {
         scanResult = ScanResult(
@@ -83,22 +98,28 @@ class _DiscoverPageState extends State<DiscoverPage> {
   void _handleItemClick(String title) {
     switch (title) {
       case '开源众包':
-        // _navToWebPage(title, 'https://zb.oschina.net/');
+        _navToWebPage(title, 'https://zb.oschina.net/');
         break;
       case '扫一扫':
-        _scan();
+        _scan(title);
         break;
       case '摇一摇':
-        // Navigator.of(context)
-        //     .push(MaterialPageRoute(builder: (context) => ShakePage()));
+        Navigator.push(context,MaterialPageRoute(builder: (context) =>const  ShakePage()));
         break;
+      default:
+        Fluttertoast.showToast(
+            msg: '功能还未开放,敬请期待！',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black45,
+            textColor: Colors.white,
+            fontSize: 16.0);
     }
   }
 
   _navToWebPage(String title,String url){
-    // if(title!=null&&url!=null){
-    //   Navigator.push(context, MaterialPageRoute(builder: (context)=>{})
-    // }
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> CommonWeb(title: title, url: url)));
   }
 
   @override

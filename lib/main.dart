@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_os_china/constants/constants.dart' show AppColor;
 import 'package:flutter_os_china/pages/error_page.dart';
 import 'package:flutter_os_china/pages/index/home_page.dart';
-import 'package:flutter_os_china/pages/index/my_page.dart';
 void main() =>runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,9 +24,6 @@ class MyApp extends StatelessWidget {
               textTheme: ButtonTextTheme.normal
             )
         ),
-        routes: {//这个设置的是静态的路由 使用Navigator.pushNamed(context, routeName);
-          '/my': (BuildContext context) => const MyPage()
-        },
         onUnknownRoute: (RouteSettings setting){
           String? name=setting.name;
           print("没有匹配到路由");
