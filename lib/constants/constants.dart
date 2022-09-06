@@ -63,6 +63,7 @@ abstract class AppUrls{
   static const String portraitUpdate = '$host/action/openapi/portrait_update';
   // 获取私信列表
   static const String messageList = '$host/action/openapi/message_list';
-
+  // 获取新闻列表
+  static const String newsList = '$host/action/openapi/news_list';
 
 }
