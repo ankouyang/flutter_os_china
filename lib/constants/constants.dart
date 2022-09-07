@@ -65,5 +65,15 @@ abstract class AppUrls{
   static const String messageList = '$host/action/openapi/message_list';
   // 获取新闻列表
   static const String newsList = '$host/action/openapi/news_list';
+  // 获取资讯详情
+  static const String newsDetail = '$host/action/openapi/news_detail';
+  //获取动弹列表
+  static const String tweetList = '$host/action/openapi/tweet_list';
+  //获取动弹详情
+  static const String tweetDetail = '$host/action/openapi/tweet_detail';
+  //获取博客列表
+  static const String blogList = '$host/action/openapi/blog_list';
+  //博客详情
+  static const String blogDetail = '$host/action/openapi/blog_detail';
 
 }

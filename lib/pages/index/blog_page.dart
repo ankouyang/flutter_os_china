@@ -9,14 +9,14 @@ import 'package:flutter_os_china/pages/login/index.dart';
 import 'package:flutter_os_china/common/event_bus.dart';
 import 'package:flutter_os_china/constants/enum_data.dart' show LoadingStatus;
 import 'package:flutter_os_china/widgets/loading_widget.dart';
-class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+class BlogPage extends StatefulWidget {
+  const BlogPage({Key? key}) : super(key: key);
 
   @override
-  State<NewsPage> createState() => _NewsPageState();
+  State<BlogPage> createState() => _BlogPageState();
 }
 
-class _NewsPageState extends State<NewsPage> {
+class _BlogPageState extends State<BlogPage> {
   int pageIndex = 1;
   bool isLogin = false;
   // 定义一个的滚动控制器，
@@ -43,7 +43,7 @@ class _NewsPageState extends State<NewsPage> {
       loadStatus = LoadingStatus.statusFree;//恢复到初始化状态
     });
     //更新新闻列表
-    getNewsList(false);
+    getBlogList(false);
   }
 
   @override
@@ -58,7 +58,7 @@ class _NewsPageState extends State<NewsPage> {
         isLogin = isLoginFlag;
       });
       // 获取新闻列表
-      getNewsList(false);
+      getBlogList(false);
     });
 
     //订阅登陆
@@ -69,7 +69,7 @@ class _NewsPageState extends State<NewsPage> {
         isLogin = true;
       });
       // 获取新闻列表
-      getNewsList(false);
+      getBlogList(false);
     });
     // 订阅退出
     eventBus.on<LogOutEvent>().listen((event) {
@@ -89,13 +89,13 @@ class _NewsPageState extends State<NewsPage> {
       dynamic maxScroll = scrollController.position.maxScrollExtent;
       dynamic pixels = scrollController.position.pixels;
       if(maxScroll == pixels){
-       //加载更多
+        //加载更多
         setState(() {
           pageIndex ++;
         });
 
         //同时获取下面的新闻数据
-        getNewsList(true);
+        getBlogList(true);
       }
     });
 
@@ -112,7 +112,7 @@ class _NewsPageState extends State<NewsPage> {
 
   }
 
-  void getNewsList(bool isLoadMore) {
+  void getBlogList(bool isLoadMore) {
     //这里先设置数量超过100 停止请求,只是用于测试，不是真正的数量
     // if(newList!=null){
     //   if(newList!.length>100){
@@ -140,12 +140,12 @@ class _NewsPageState extends State<NewsPage> {
         'pageSize': 20,
         'dataType': 'json'
       };
-      NetUtils.get(AppUrls.newsList, params).then((data) {
+      NetUtils.get(AppUrls.blogList, params).then((data) {
         print('获取数据');
         print(data);
         if (data.isNotEmpty) {
           Map<String, dynamic> mapData = json.decode(data);
-          List newListData = mapData['newslist'];
+          List newListData = mapData['bloglist'];
           setState(() {
             if(isLoadMore){
               if(newListData.isEmpty||newListData == null){
@@ -227,6 +227,6 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   StatefulWidget buildNewListItem(int index) {
-    return NewListItem(newsList: newList![index],type: 'news',title: '资讯详情');
+    return NewListItem(newsList: newList![index],type: 'blog',title: '博客详情');
   }
 }

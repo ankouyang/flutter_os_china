@@ -1,28 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
+import 'package:flutter_os_china/pages/newsDetail/index.dart';
 class NewListItem extends StatefulWidget {
   final Map<String,dynamic>  newsList;
-  const NewListItem({Key? key, required this.newsList}) : super(key: key);
+  final String type;
+  final String title;
+  const NewListItem({Key? key, required this.newsList, required this.type, required this.title}) : super(key: key);
   @override
   State<NewListItem> createState() => _NewListItemState();
 }
 class _NewListItemState extends State<NewListItem> {
   @override
   Widget build(BuildContext context) {
+
+    var rowChildren = <Widget>[
+      Text(widget.newsList['author']),
+      const SizedBox(width: 5.0),
+      Text(widget.newsList['pubDate']),
+      const SizedBox(width: 8.0)
+    ];
+    if(widget.type =='blog'){
+      rowChildren.add( Text(widget.newsList['type']==1?'原创':'转载',style: const TextStyle(fontSize: 15.0)));
+    }
     //点击有波浪纹的效果
     return InkWell(
       onTap: (){
-        print('跳转到对应的资讯列表');
-        Fluttertoast.showToast(
-            msg: '功能还未开放,敬请期待！',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black45,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        if(mounted){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> NewsDetailPage(id:widget.newsList['id'], type:widget.type,title: widget.title)));
+        }
       },
       child: Column(
         children: <Widget>[
@@ -45,11 +50,7 @@ class _NewListItemState extends State<NewListItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Row(
-                children: <Widget>[
-                  Text(widget.newsList['author']),
-                  const SizedBox(width: 5.0),
-                  Text(widget.newsList['pubDate']),
-                ],
+                children: rowChildren,
               ),
               Row(
                 children: <Widget>[

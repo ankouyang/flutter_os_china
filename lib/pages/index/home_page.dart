@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_os_china/pages/index/discover_page.dart';
 import 'package:flutter_os_china/pages/index/my_page.dart';
 import 'package:flutter_os_china/pages/index/news_page.dart';
-import 'package:flutter_os_china/pages/index/tweet_page.dart';
+import 'package:flutter_os_china/pages/index/blog_page.dart';
 import 'package:flutter_os_china/widgets/my_drawer.dart';
 import 'package:flutter_os_china/widgets/navigation_icon_view.dart';
 class HomePage extends StatefulWidget {
@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
    // bottomBarTitle
-   final  _appBottomBarTitle = ['资讯','动弹','发现','我的'];
+   final  _appBottomBarTitle = ['资讯','博客','发现','我的'];
   // 这里可以定义一个NavigationIconView Widgets类初始化赋值
    late  List<NavigationIconView> _navigationIconViews;
    //当前currentIndex
@@ -34,14 +34,14 @@ class _HomePageState extends State<HomePage> {
     // 初始化navigationIconViews
     _navigationIconViews = [
       NavigationIconView(label: '资讯', iconPath: 'assets/images/ic_nav_news_normal.png', activeIconPath: 'assets/images/ic_nav_news_actived.png'),
-      NavigationIconView(label: '动弹', iconPath: 'assets/images/ic_nav_tweet_normal.png', activeIconPath: 'assets/images/ic_nav_tweet_actived.png'),
+      NavigationIconView(label: '博客', iconPath: 'assets/images/ic_nav_tweet_normal.png', activeIconPath: 'assets/images/ic_nav_tweet_actived.png'),
       NavigationIconView(label: '发现', iconPath: 'assets/images/ic_nav_discover_normal.png', activeIconPath: 'assets/images/ic_nav_discover_actived.png'),
       NavigationIconView(label: '我的', iconPath: 'assets/images/ic_nav_my_normal.png', activeIconPath: 'assets/images/ic_nav_my_pressed.png'),
     ];
    //初始化首页 Widget
    _homeWidget =[
       NewsPage(),
-      TweetPage(),
+      BlogPage(),
       DiscoverPage(),
       MyPage(),
    ];
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
         menuIcons: const [Icons.send,Icons.home,Icons.error,Icons.settings],
-        menuTitles: const ['发布动弹','动弹小黑屋','关于','设置']),
+        menuTitles: const ['写博客','小黑屋','关于','设置']),
     );
   }
 }

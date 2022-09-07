@@ -108,6 +108,7 @@ class _ShakePageState extends State<ShakePage> {
     }
     _playerClickShake.dispose();
     _playerClickResult.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
