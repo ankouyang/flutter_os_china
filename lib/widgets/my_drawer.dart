@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_os_china/pages/drawer/about_page.dart';
 import 'package:flutter_os_china/pages/drawer/settings_page.dart';
-import 'package:flutter_os_china/pages/drawer/publish_tweet_page.dart';
+import 'package:flutter_os_china/pages/drawer/publish_blog_page.dart';
 import 'package:flutter_os_china/pages/drawer/tweet_home_page.dart';
 
 class MyDrawer extends StatelessWidget {

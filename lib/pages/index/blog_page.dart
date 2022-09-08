@@ -9,6 +9,8 @@ import 'package:flutter_os_china/pages/login/index.dart';
 import 'package:flutter_os_china/common/event_bus.dart';
 import 'package:flutter_os_china/constants/enum_data.dart' show LoadingStatus;
 import 'package:flutter_os_china/widgets/loading_widget.dart';
+import 'package:flutter_os_china/widgets/flutter-swiper.dart';
+
 class BlogPage extends StatefulWidget {
   const BlogPage({Key? key}) : super(key: key);
 
@@ -30,7 +32,14 @@ class _BlogPageState extends State<BlogPage> {
   String loadingText = '加载中...';
   // 加载默认是空闲状态
   dynamic loadStatus = LoadingStatus.statusFree;
-
+  // imgList
+  List<Map<String,dynamic>> imgList = [
+    {'title':'','img':'https://static.oschina.net/uploads/space/2021/0814/082104_deAI_4252687.png','url':'https://www.oschina.net/question/4487475_2323867'},
+    {'title':'','img':'https://oscimg.oschina.net/oscnet/up-5f7b19952085318999567bddddbd9653774.png','url':'https://www.oschina.net/question/4489239_2322718'},
+    {'title':'','img':'https://static.oschina.net/uploads/space/2022/0827/082211_BlX8_2720166.png','url':'https://www.oschina.net/news/208136/awk-support-unicode'},
+    {'title':'','img':'https://static.oschina.net/uploads/space/2021/0422/163252_lwf9_4487475.png','url':'https://www.oschina.net/question/4487475_2322385'},
+    {'title':'','img':'https://static.oschina.net/uploads/space/2022/0829/072426_P5Jg_4937141.png','url':'https://www.oschina.net/news/208302/virtualbox-7-support-windows-11'},
+  ];
 
   //下拉刷新
   Future<void> _pullRefresh() async {
@@ -113,14 +122,6 @@ class _BlogPageState extends State<BlogPage> {
   }
 
   void getBlogList(bool isLoadMore) {
-    //这里先设置数量超过100 停止请求,只是用于测试，不是真正的数量
-    // if(newList!=null){
-    //   if(newList!.length>100){
-    //     loadingText = '--- 亲,我是有底线的 ---';
-    //     loadStatus = LoadingStatus.statusCompleted; //加载完成
-    //     return;
-    //   }
-    // }
     //设置状态
     if(loadStatus == LoadingStatus.statusFree){
       // 空闲状态的时候才能下拉加载数据
@@ -201,27 +202,35 @@ class _BlogPageState extends State<BlogPage> {
     //  RefreshIndicator  下拉刷新页面
     return RefreshIndicator(
         onRefresh: _pullRefresh,
-        child: ListView.builder(
-            controller: scrollController,//注意这里一定要加上滚动的控制器,否则是无法监听滚动元素的
-            itemBuilder: (context, index) {
-              if(newList?.length == index){
-                return LoadingWidget(loadText:loadingText,loadStatus: loadStatus);
-              }else{
-                return Container(
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.5,
-                              color: Color(0xffaaaaaa)
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FlutterSwiperWidget(imgList: imgList),
+            Expanded(child:ListView.builder(
+                controller: scrollController,//注意这里一定要加上滚动的控制器,否则是无法监听滚动元素的
+                itemBuilder: (context, index) {
+                  if(newList?.length == index){
+                    return LoadingWidget(loadText:loadingText,loadStatus: loadStatus);
+                  }else{
+                    return Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  width: 0.5,
+                                  color: Color(0xffaaaaaa)
+                              )
                           )
-                      )
-                  ),
-                  child: buildNewListItem(index),
-                );
-              }
-            },
-            itemCount: newList!.length + 1 //这个长度一定要记得+1 需要包含那个上拉加载图标
+                      ),
+                      child: buildNewListItem(index),
+                    );
+                  }
+                },
+                itemCount: newList!.length + 1 //这个长度一定要记得+1 需要包含那个上拉加载图标
+            ) )
+
+          ],
         )
     );
   }

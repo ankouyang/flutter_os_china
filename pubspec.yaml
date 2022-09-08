@@ -67,6 +67,10 @@ dev_dependencies:
   vibration: ^1.7.5
   # 播放音乐
   just_audio: ^0.9.28
+  # flutter_swiper
+  flutter_swiper: ^1.1.6
+  #富文本
+  flutter_quill: ^6.0.0
   # webview_flutter插件
   flutter_webview_plugin:
     git: https://github.com/snoopdoggy322/flutter_webview_plugin
