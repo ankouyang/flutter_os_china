@@ -75,5 +75,10 @@ abstract class AppUrls{
   static const String blogList = '$host/action/openapi/blog_list';
   //博客详情
   static const String blogDetail = '$host/action/openapi/blog_detail';
+  // 发布博客
+  static const String blogPub = '$host/action/openapi/blog_pub';
+
+  // 发帖
+  static const String postPub = '$host/action/openapi/post_pub';
 
 }

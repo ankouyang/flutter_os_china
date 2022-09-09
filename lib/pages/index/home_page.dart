@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
         menuIcons: const [Icons.send,Icons.home,Icons.error,Icons.settings],
-        menuTitles: const ['写博客','小黑屋','关于','设置']),
+        menuTitles: const ['写帖子','小黑屋','关于','设置']),
     );
   }
 }

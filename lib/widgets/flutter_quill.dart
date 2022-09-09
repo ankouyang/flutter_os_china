@@ -1,16 +1,17 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart'  hide Text ;
 class FlutterQuill extends StatefulWidget {
-  const FlutterQuill({Key? key}) : super(key: key);
+  //  定义一个ValueChanged 父组件的回调方法
+  final ValueChanged<String>  changeContentCallBack;
+  const FlutterQuill({Key? key, required this.changeContentCallBack}) : super(key: key);
 
   @override
   State<FlutterQuill> createState() => _FlutterQuillState();
 }
 
 class _FlutterQuillState extends State<FlutterQuill> {
-  final QuillController _controller = QuillController.basic();
+   QuillController _controller = QuillController.basic();
 
   @override
   void initState() {
@@ -19,10 +20,17 @@ class _FlutterQuillState extends State<FlutterQuill> {
     // 监听flutter_quill
     _controller.addListener(() {
       // print(_controller.document.toDelta());
-      var json = jsonEncode(_controller.document.toDelta());
-      print(json);
+      var json = jsonEncode(_controller.document.toDelta().toJson());
+      //监听富文本内容的变化
+      widget.changeContentCallBack(json);
     });
 
+    setState(() {
+      // 这个用于数据回显
+      // dynamic  jsonString = jsonEncode([{"insert":"我就是我颜色不一样的烟火\n"}]);
+      // var myJSON = jsonDecode(jsonString);
+      // _controller = QuillController(document: Document.fromJson(myJSON), selection: const TextSelection.collapsed(offset: 0));
+    });
 
   }
 
