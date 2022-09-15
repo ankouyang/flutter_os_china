@@ -3,6 +3,8 @@ import 'package:flutter_os_china/pages/drawer/about_page.dart';
 import 'package:flutter_os_china/pages/drawer/settings_page.dart';
 import 'package:flutter_os_china/pages/drawer/publish_blog_page.dart';
 import 'package:flutter_os_china/pages/drawer/tweet_home_page.dart';
+import 'package:flutter_os_china/pages/drawer/radio_group_widget.dart';
+
 
 class MyDrawer extends StatelessWidget {
   final String headImgPath;
@@ -13,7 +15,8 @@ class MyDrawer extends StatelessWidget {
     0:PublishTweetPage(),
     1:TweetHomePage(),
     2:AboutPage(),
-    3:SettingsPage(),
+    3:RadioGroup(),
+    4:SettingsPage(),
   };
   MyDrawer({Key? key, required this.headImgPath, required this.menuTitles, required this.menuIcons}) : super(key: key);
   @override
