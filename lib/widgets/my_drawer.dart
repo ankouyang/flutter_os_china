@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_os_china/pages/drawer/about_page.dart';
+import 'package:flutter_os_china/pages/drawer/baseWidget/index.dart';
 import 'package:flutter_os_china/pages/drawer/settings_page.dart';
 import 'package:flutter_os_china/pages/drawer/publish_blog_page.dart';
-import 'package:flutter_os_china/pages/drawer/tweet_home_page.dart';
-import 'package:flutter_os_china/pages/drawer/radio_group_widget.dart';
+import 'package:flutter_os_china/pages/drawer/layoutWidget/index.dart';
 
 
 class MyDrawer extends StatelessWidget {
@@ -11,12 +10,11 @@ class MyDrawer extends StatelessWidget {
   final List menuTitles;
   final List menuIcons;
   // 定义一个Map
-  final Map<int,Widget> _navigationMap = {
-    0:PublishTweetPage(),
-    1:TweetHomePage(),
-    2:AboutPage(),
-    3:RadioGroup(),
-    4:SettingsPage(),
+  final   Map<int,Widget>  _navigationMap = {
+    0:const PublishTweetPage(),
+    1:const SettingsPage(),
+    2:const BaseWidget(),
+    3:const LayoutWidget(),
   };
   MyDrawer({Key? key, required this.headImgPath, required this.menuTitles, required this.menuIcons}) : super(key: key);
   @override
@@ -52,7 +50,7 @@ class MyDrawer extends StatelessWidget {
     ); //image占了一个位置，所以这里需要+1
   }
  _pushRoute(BuildContext context,int index){
-    Navigator.pop(context);//关闭Drawer抽屉
+    // Navigator.pop(context);//关闭Drawer抽屉
     Widget currentWidget = _navigationMap[index]!;
     Navigator.push(context, MaterialPageRoute(builder: (context)=>currentWidget));
  }

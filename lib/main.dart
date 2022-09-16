@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_os_china/constants/constants.dart' show AppColor;
 import 'package:flutter_os_china/pages/error_page.dart';
 import 'package:flutter_os_china/pages/index/home_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 void main() =>runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -30,7 +31,18 @@ class MyApp extends StatelessWidget {
           // MaterialPageRoute方法是动态路由
           return MaterialPageRoute(builder: (context)=>const ErrorPage());
         },
-      home: HomePage(),
+      home: const HomePage(),
+        locale: const Locale('zh'),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          //此处
+          Locale('zh', 'CH'),
+          Locale('en', 'US'),
+        ]
     );
   }
 }
