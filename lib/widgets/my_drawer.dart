@@ -3,7 +3,7 @@ import 'package:flutter_os_china/pages/drawer/baseWidget/index.dart';
 import 'package:flutter_os_china/pages/drawer/settings_page.dart';
 import 'package:flutter_os_china/pages/drawer/publish_blog_page.dart';
 import 'package:flutter_os_china/pages/drawer/layoutWidget/index.dart';
-
+import 'package:flutter_os_china/pages/drawer/containerWidget/index.dart';
 
 class MyDrawer extends StatelessWidget {
   final String headImgPath;
@@ -15,6 +15,7 @@ class MyDrawer extends StatelessWidget {
     1:const SettingsPage(),
     2:const BaseWidget(),
     3:const LayoutWidget(),
+    4:const ContainerWidget(),
   };
   MyDrawer({Key? key, required this.headImgPath, required this.menuTitles, required this.menuIcons}) : super(key: key);
   @override

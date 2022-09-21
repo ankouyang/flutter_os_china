@@ -87,8 +87,8 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
-        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined],
-        menuTitles: const ['写帖子','设置','基础类组件','布局类组件']),
+        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream],
+        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件']),
     );
   }
 }
