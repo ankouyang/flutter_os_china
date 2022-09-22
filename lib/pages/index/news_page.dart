@@ -9,8 +9,13 @@ import 'package:flutter_os_china/pages/login/index.dart';
 import 'package:flutter_os_china/common/event_bus.dart';
 import 'package:flutter_os_china/constants/enum_data.dart' show LoadingStatus;
 import 'package:flutter_os_china/widgets/loading_widget.dart';
+
+
+//这里定义一个GlobalKey
+GlobalKey<_NewsPageState>   newsPageKey = GlobalKey();
 class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+  final ValueChanged<bool>  changeContentCallBack;
+  const NewsPage({Key? key, required this.changeContentCallBack}) : super(key: key);
 
   @override
   State<NewsPage> createState() => _NewsPageState();
@@ -93,9 +98,18 @@ class _NewsPageState extends State<NewsPage> {
         setState(() {
           pageIndex ++;
         });
-
         //同时获取下面的新闻数据
         getNewsList(true);
+      }
+      // print(widget.showToTopBtn);
+      if (scrollController.offset < 1000) {
+        setState(() {
+          widget.changeContentCallBack(false);
+        });
+      } else if (scrollController.offset >= 1000) {
+        setState(() {
+          widget.changeContentCallBack(true);
+        });
       }
     });
 
@@ -110,6 +124,15 @@ class _NewsPageState extends State<NewsPage> {
     //注意一点要把scrollController进行销毁 否则容易内存溢出
     scrollController.dispose();
 
+  }
+  //回到顶部
+   scrollTopPos(){
+    // scrollController.jumpTo(0.0);
+    scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds:100 ),//动画持续时间
+      curve: Curves.easeInOut,//动画方式
+    );
   }
 
   void getNewsList(bool isLoadMore) {
@@ -201,27 +224,32 @@ class _NewsPageState extends State<NewsPage> {
     //  RefreshIndicator  下拉刷新页面
     return RefreshIndicator(
         onRefresh: _pullRefresh,
-        child: ListView.builder(
-            controller: scrollController,//注意这里一定要加上滚动的控制器,否则是无法监听滚动元素的
-            itemBuilder: (context, index) {
-              if(newList?.length == index){
-                return LoadingWidget(loadText:loadingText,loadStatus: loadStatus);
-              }else{
-                return Container(
-                  padding: const EdgeInsets.all(10.0),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              width: 0.5,
-                              color: Color(0xffaaaaaa)
-                          )
-                      )
-                  ),
-                  child: buildNewListItem(index),
-                );
-              }
-            },
-            itemCount: newList!.length + 1 //这个长度一定要记得+1 需要包含那个上拉加载图标
+        child: Column(
+          children: [
+            const ListTile(title:Text("资讯中心")),
+            Expanded(child:  ListView.builder(
+               controller: scrollController,//注意这里一定要加上滚动的控制器,否则是无法监听滚动元素的
+               itemBuilder: (context, index) {
+                 if(newList?.length == index){
+                   return LoadingWidget(loadText:loadingText,loadStatus: loadStatus);
+                 }else{
+                   return Container(
+                     padding: const EdgeInsets.all(10.0),
+                     decoration: const BoxDecoration(
+                         border: Border(
+                             bottom: BorderSide(
+                                 width: 0.5,
+                                 color: Color(0xffaaaaaa)
+                             )
+                         )
+                     ),
+                     child: buildNewListItem(index),
+                   );
+                 }
+               },
+               itemCount: newList!.length + 1 //这个长度一定要记得+1 需要包含那个上拉加载图标
+           ))
+          ],
         )
     );
   }

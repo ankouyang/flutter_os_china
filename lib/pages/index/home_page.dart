@@ -5,6 +5,8 @@ import 'package:flutter_os_china/pages/index/news_page.dart';
 import 'package:flutter_os_china/pages/index/blog_page.dart';
 import 'package:flutter_os_china/widgets/my_drawer.dart';
 import 'package:flutter_os_china/widgets/navigation_icon_view.dart';
+import '../../constants/constants.dart';
+import '../../widgets/keep_alive_wrapper.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -19,6 +21,8 @@ class _HomePageState extends State<HomePage> {
    late  List<NavigationIconView> _navigationIconViews;
    //当前currentIndex
    int _currentIndex = 0;
+
+   bool showToTopBtn = false;
 
    //切换不同的页面
    late  List<Widget>   _homeWidget;
@@ -40,7 +44,11 @@ class _HomePageState extends State<HomePage> {
     ];
    //初始化首页 Widget
    _homeWidget =[
-      NewsPage(),
+      NewsPage( key: newsPageKey, changeContentCallBack: (flag){
+        setState(() {
+          showToTopBtn = flag;
+        });
+      }),
       BlogPage(),
       DiscoverPage(),
       MyPage(),
@@ -62,7 +70,8 @@ class _HomePageState extends State<HomePage> {
       body: PageView.builder(
         // physics: NeverScrollableScrollPhy sics(),//禁止滑动
         itemBuilder:(BuildContext context, int index) { //使用pageView组件 需要使用 PageView.builder  并返回当前的组件
-          return    _homeWidget.elementAt(index);
+          return  KeepAliveWrapper(child:_homeWidget.elementAt(index));
+          // return _homeWidget.elementAt(index);
         },
         itemCount:_homeWidget.length,//PageView的数量
         //控制器是当前的PageContoller控制器的实例,
@@ -87,8 +96,17 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
-        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream],
-        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件']),
-    );
+        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream,Icons.screen_lock_landscape_outlined,Icons.accessibility],
+        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件','可滚动类组件','功能型组件']),
+      floatingActionButton: showToTopBtn?FloatingActionButton(
+          backgroundColor: AppColor.primaryColor,
+          child:  const Icon(Icons.arrow_upward,color: Colors.white),
+          onPressed: () {
+            //使用newsPageKey 来调用子组件中方法
+            print( newsPageKey.currentState?.scrollTopPos());
+            // newsPageKey.currentState!.scrollTopPos();
+          },
+        ):null,
+      );
   }
 }
