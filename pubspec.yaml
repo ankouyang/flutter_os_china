@@ -73,6 +73,10 @@ dev_dependencies:
   flutter_swiper: ^1.1.6
   #富文本
   flutter_quill: ^6.0.0
+  # provider provider是一个依赖注入和状态管理的混合工具，通过组件来构建组件
+  provider: ^6.0.3
+  # address_picker 省市区选择
+  address_picker: ^0.0.1
   # webview_flutter插件
   flutter_webview_plugin:
     git: https://github.com/snoopdoggy322/flutter_webview_plugin
