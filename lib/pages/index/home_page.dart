@@ -96,8 +96,8 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
-        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream,Icons.screen_lock_landscape_outlined,Icons.accessibility],
-        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件','可滚动类组件','功能型组件']),
+        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream,Icons.screen_lock_landscape_outlined,Icons.accessibility,Icons.event],
+        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件','可滚动类组件','功能型组件','事件处理与通知']),
       floatingActionButton: showToTopBtn?FloatingActionButton(
           backgroundColor: AppColor.primaryColor,
           child:  const Icon(Icons.arrow_upward,color: Colors.white),
