@@ -96,8 +96,32 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: MyDrawer(
         headImgPath: 'assets/images/cover_img.jpg',
-        menuIcons: const [Icons.send,Icons.settings,Icons.widgets,Icons.layers_outlined,Icons.icecream,Icons.screen_lock_landscape_outlined,Icons.accessibility,Icons.event],
-        menuTitles: const ['写帖子','设置','基础类组件','布局类组件','容器类组件','可滚动类组件','功能型组件','事件处理与通知']),
+        menuIcons: const [
+          Icons.send,
+          Icons.settings,
+          Icons.widgets,
+          Icons.layers_outlined,
+          Icons.icecream,
+          Icons.screen_lock_landscape_outlined,
+          Icons.accessibility,
+          Icons.event,
+          Icons.file_download_done_outlined,
+          Icons.panorama,
+          Icons.app_blocking_outlined
+        ],
+        menuTitles: const [
+          '写帖子',
+          '设置',
+          '基础类组件',
+          '布局类组件',
+          '容器类组件',
+          '可滚动类组件',
+          '功能型组件',
+          '事件处理与通知',
+          '文件操作和网络请求',
+          'flutter插件',
+          '完整的Flutter应用'
+        ]),
       floatingActionButton: showToTopBtn?FloatingActionButton(
           backgroundColor: AppColor.primaryColor,
           child:  const Icon(Icons.arrow_upward,color: Colors.white),

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_os_china/constants/constants.dart';
 class GestureDetectorWidget extends StatefulWidget {
@@ -8,10 +9,18 @@ class GestureDetectorWidget extends StatefulWidget {
 }
 
 class _GestureDetectorWidgetState extends State<GestureDetectorWidget> {
+
+  final TapGestureRecognizer _tapGestureRecognizer = TapGestureRecognizer();
+
+
   String _operation = "No Gesture detected!"; //保存事件名
 
   double top = 0.0; //距顶部的偏移
   double left = 0.0;//距左边的偏移
+
+  double _width = 200.0; //通过修改图片宽度来达到缩放效果
+
+  bool _toggle = false ;//变色开关
 
   void updateText(String text) {
     //更新显示的事件名
@@ -26,7 +35,7 @@ class _GestureDetectorWidgetState extends State<GestureDetectorWidget> {
           appBar: AppBar(
             title: const Text('GestureDetector'),
           ),
-          body: buildGestureTouchMove(),
+          body: buildGestureRecognizer(),
     );
   }
 
@@ -93,6 +102,47 @@ class _GestureDetectorWidgetState extends State<GestureDetectorWidget> {
                ),
            )
          ],
+      );
+  }
+
+  // 缩放
+  Widget  buildGestureScale(){
+      return Center(
+         child: GestureDetector(
+           //指定宽度，高度自适应
+           child:Image.network('https://t7.baidu.com/it/u=1951548898,3927145&fm=193&f=GIF',width: _width),
+           //两个手指波动变大
+           onScaleUpdate: (ScaleUpdateDetails details) {
+             setState(() {
+               //缩放倍数在0.8到10倍之间
+               _width=200*details.scale.clamp(.8, 10.0);
+             });
+           },
+         ),
+      );
+  }
+
+  // GestureRecognizer 这个配合TextSpan富文本一起使用 这个也是经常用来富文本跳转
+  Widget buildGestureRecognizer(){
+      return Center(
+        child: Text.rich(
+           TextSpan(
+             children:[
+               const TextSpan(text:'你好世界'),
+               TextSpan(text:"点击我变色",style: TextStyle(
+                 fontSize: 30.0,
+                 color: _toggle?Colors.blue:Colors.red,
+               ),
+                 recognizer:_tapGestureRecognizer..onTap=(){ //为级联操作,可以同时赋值执行方法
+                       setState(() {
+                         _toggle = !_toggle;
+                       });
+                 },
+               ),
+               const TextSpan(text:'你好世界')
+             ]
+           )
+        ),
       );
   }
 

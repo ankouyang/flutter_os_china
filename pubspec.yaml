@@ -77,6 +77,8 @@ dev_dependencies:
   provider: ^6.0.3
   # address_picker 省市区选择
   address_picker: ^0.0.1
+  #path_provider 路径保存
+  path_provider:
   # webview_flutter插件
   flutter_webview_plugin:
     git: https://github.com/snoopdoggy322/flutter_webview_plugin
